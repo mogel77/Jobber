@@ -77,13 +77,13 @@ void Job::init(const char* name, uint32_t timeout, uint32_t delay) {
 	this->lastAction = millis() + delay;
 	this->timeout = timeout;
     // SERIAL_DEBUG.printf("%8ums THREAD-Init: %s - Timeout: %ims - Next: %8u\n", millis(), name, this->timeout, this->lastAction);
-    for(int i = 0; i < THREAD_CYCLE_SIZE; i++) cycleDuration[i] = 0;
-    snprintf(this->jobname, THREAD_NAME_SIZE - 1, "%s", name);
+    for(int i = 0; i < JOB_CYCLE_SIZE; i++) cycleDuration[i] = 0;
+    snprintf(this->jobname, JOB_NAME_SIZE - 1, "%s", name);
     overloadCount = 0;
     cycleCurrentLoad = 0;
     jobId = jobcounter++;
     threadList.insert(threadList.end(), this);
-    snprintf(this->errormessage, THREAD_ERROR_SIZE - 1, "%s", "running perfekt");
+    snprintf(this->errormessage, JOB_ERROR_SIZE - 1, "%s", "running perfekt");
 }
 void Job::reset() {
     this->lastAction = millis();
@@ -109,10 +109,10 @@ void Job::check() {
 
         // Durchschnittliche Auslastung berechnen
         cycleCurrentLoad = 0;
-        for(int i = 1; i < THREAD_CYCLE_SIZE; i++) cycleDuration[i - 1] = cycleDuration[i];     // um eins nach vorne verschieben
-        cycleDuration[THREAD_CYCLE_SIZE - 1] = measured;                                        // aktueller Stand
-        for(int i = 0; i < THREAD_CYCLE_SIZE; i++) cycleCurrentLoad += cycleDuration[i];        // summieren
-        cycleCurrentLoad /= THREAD_CYCLE_SIZE;
+        for(int i = 1; i < JOB_CYCLE_SIZE; i++) cycleDuration[i - 1] = cycleDuration[i];     // um eins nach vorne verschieben
+        cycleDuration[JOB_CYCLE_SIZE - 1] = measured;                                        // aktueller Stand
+        for(int i = 0; i < JOB_CYCLE_SIZE; i++) cycleCurrentLoad += cycleDuration[i];        // summieren
+        cycleCurrentLoad /= JOB_CYCLE_SIZE;
 
         // in Prozent wandeln
         cycleCurrentLoad = (((cycleCurrentLoad / (timeout * 1.f)) * 100.0f) / 1000);      // timout sind ms - load zählt in us - daher umrechnen

@@ -23,12 +23,10 @@
 
 
 
-#ifndef THREADS_PSEUDOTHREAD_H
-#define THREADS_PSEUDOTHREAD_H
+#ifndef DE_ROBOTICCARE_GITHUB_JOBBER_H
+#define DE_ROBOTICCARE_GITHUB_JOBBER_H
 
 
-
-#include "globals.h"
 
 
 
@@ -36,8 +34,26 @@
 
 
 
+/** Anzahl der Zyklen, die gemessen wird */
+#ifndef JOB_CYCLE_SIZE
+    #define JOB_CYCLE_SIZE           (8)
+#endif
 
-namespace de { namespace roboticcare { namespace repraxi {
+/** Platz für den Thread-Namen */
+#ifndef JOB_NAME_SIZE
+    #define JOB_NAME_SIZE            (20)
+#endif
+
+/** Platz für Fehlermeldungen der Threads - nur intern */
+#ifndef JOB_ERROR_SIZE
+    #define JOB_ERROR_SIZE           (100)
+#endif
+
+
+
+
+
+namespace de { namespace roboticcare { namespace github {
 
 
 
@@ -135,7 +151,7 @@ class Job {
     protected:
         /** @brief legt die Fehlermeldung fest
          * @param die eigentliche Fehlermeldung, max. @see THREAD_ERROR_SIZE Bytes */
-        void setErrorMessage(const char* message) { snprintf(errormessage, THREAD_ERROR_SIZE - 1, message); }
+        void setErrorMessage(const char* message) { snprintf(errormessage, JOB_ERROR_SIZE - 1, message); }
         /** löscht den Fehler und setzt die Default-Mmeldung 
          * @remark zu jedem Anfang der Abarbeitung ausgeführt. Ist ein Job deaktiviert @see disable, wird
          * die Methode nicht aufgerufen und die letzte erzeugte Fehlermeldung kann über die Konsole abgerufen werden.
@@ -165,12 +181,12 @@ class Job {
         bool enabled;
         uint32_t lastAction;
         uint32_t timeout;
-        char jobname[THREAD_NAME_SIZE];
-        char errormessage[THREAD_ERROR_SIZE];
+        char jobname[JOB_NAME_SIZE];
+        char errormessage[JOB_ERROR_SIZE];
         uint32_t overloadCount;
         uint32_t jobId;
 
-        uint32_t cycleDuration[THREAD_CYCLE_SIZE];      // Timeouts in us
+        uint32_t cycleDuration[JOB_CYCLE_SIZE];      // Timeouts in us
         uint32_t cycleCurrentLoad;                      // aktuelle Last in %
 
 };
