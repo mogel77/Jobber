@@ -1,0 +1,14 @@
+{
+    "name": "Jobber",
+    "version": "1.0.0",
+    "description": "simulated threading for Arduino & Co.",
+    "authors": [
+        {
+            "name": "R.Gorzelitz",
+            "url": "https://www.x8bit.de"
+        }
+    ],
+    "homepage": "https://www.x8bit.de/",
+    "frameworks": "*",
+    "platforms": "*"
+}
