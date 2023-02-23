@@ -27,16 +27,15 @@
 
 
 
-
 #include "Job.h"
 
 
 
-using namespace de::roboticcare::repraxi;
+using namespace de::roboticcare::github;
 using namespace std;
 
 
-// List<Job>* Job::threadList = new List<Job>();
+
 vector<Job*> Job::threadList;
 uint32_t Job::jobcounter = 1;
 
@@ -44,10 +43,8 @@ uint32_t Job::jobcounter = 1;
 
 // statischer Scheiß der Klasse
 void Job::checkThreads() {
-    // SERIAL_DEBUG.printf("    %i Jobs\n", threadList.size());
     for(vector<Job*>::iterator iterator = threadList.begin(); iterator != threadList.end(); ++iterator) {
         Job* job = (*iterator);
-        //SERIAL_DEBUG.printf("Job: %s\n", job->getJobName())
         job->check();
     }
 }
@@ -99,9 +96,7 @@ void Job::check() {
     if (enabled && (millis() - lastAction >= timeout) ) {
         lastAction = millis();
         uint32_t start = micros();
-        //SERIAL_DEBUG.printf(">>> execute (%s:%i) - begin\n", jobname, jobId);
         execute(firstrun);
-        //SERIAL_DEBUG.printf("<<< execute (%s:%i) - end\n", jobname, jobId);
         firstrun = false;
         int32_t measured = micros() - start;
         // wir hatten einen Überlauf - diese Runde nix berechnen
@@ -119,9 +114,17 @@ void Job::check() {
 
         if (cycleCurrentLoad > 100) {
             overloadCount++;
-            if (overloadCount == 5) SERIAL_DEBUG.printf("Thread: '%s' ist überlastet mit %i%%\n", jobname, cycleCurrentLoad);
+            if (overloadCount == 5) {
+                char temp[100];
+                snprintf(temp, 100, "Thread: '%s' ist überlastet mit %i%%", jobname, cycleCurrentLoad);
+                SERIAL_DEBUG.println(temp);
+            }
         } else {
-            if (overloadCount >= 5) SERIAL_DEBUG.printf("Thread: Überlastung für '%s' zurückgesetzt\n", jobname);
+            if (overloadCount >= 5) {
+                char temp[100];
+                snprintf(temp, 100, "Thread: Überlastung für '%s' zurückgesetzt\n", jobname);
+                SERIAL_DEBUG.println(temp);
+            }
             overloadCount = 0;
         }
     }

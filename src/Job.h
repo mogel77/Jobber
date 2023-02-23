@@ -30,7 +30,8 @@
 
 
 
-#include <vector>
+#include <Arduino.h>
+#include <ArduinoSTL.h>
 
 
 
@@ -47,6 +48,11 @@
 /** Platz für Fehlermeldungen der Threads - nur intern */
 #ifndef JOB_ERROR_SIZE
     #define JOB_ERROR_SIZE           (100)
+#endif
+
+/** Debug-Ausgabe */
+#ifndef SERIAL_DEBUG
+    #define SERIAL_DEBUG            (Serial)
 #endif
 
 
@@ -138,16 +144,6 @@ class Job {
         /** die mögliche Fehlermeldung, wenn ein Fehler auftritt bzw. aufgetreten ist */
         const char* getErrorMessage()   { return errormessage; }
 
-        /** @brief listet die verarbeitbaren Befehle auf der Console auf 
-         * @return TRUE wenn die Methode überschrieben wurde (erzeugt eine Leerzeile) */
-        virtual bool commandList() { return false; };
-        /**
-         * @brief arbeitet einen Befehl ab, der über die serielle Console kam
-         * @param command dieser Befehl muss abgearbeitet werden (ended mit \0)
-         * @return TRUE wenn alles passt und der Befehl abgearbeitet wurde
-         */
-        virtual bool commandHandle(const char* command) { return false; }
-
     protected:
         /** @brief legt die Fehlermeldung fest
          * @param die eigentliche Fehlermeldung, max. @see THREAD_ERROR_SIZE Bytes */
@@ -200,4 +196,3 @@ class Job {
 
 
 #endif
-
