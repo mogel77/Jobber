@@ -31,7 +31,12 @@
 
 
 #include <Arduino.h>
-#include <ArduinoSTL.h>
+
+#ifndef NO_ARDUINO_STL
+    #include <ArduinoSTL.h>
+#else
+    #include <vector>
+#endif
 
 
 
