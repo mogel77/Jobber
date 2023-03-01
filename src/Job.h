@@ -160,8 +160,6 @@ class Job {
         void flushErrorMessage() { setErrorMessage("running perfekt"); }
         /** interne Aufruf um den Job abzuarbeiten @see execute */
         void check();
-
-    private: 
         /**
          * @brief führt die Abarbeitung eines Job durch
          * @remark es darf keine Endlosschleife enthalten sein
@@ -169,7 +167,9 @@ class Job {
          * spätere Initialisierungen die nicht im .ctor() gemacht werden können
          */
         virtual void execute(bool firstrun) = 0;
-        /**
+
+	private:
+		/**
          * @brief initialisiert den Job, wird von .ctor() aufgerufen
          * @param jobname der über die Konsole anzuzeigende Namen
          * @param timeout Zeit zwischen zwei Abarbeitungspunkten (in ms)
