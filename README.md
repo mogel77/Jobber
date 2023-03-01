@@ -3,6 +3,12 @@
 # Jobber [EN]
 Simplified thread management for Arduino and others.
 
+# Challenges
+
+The "ArduinoSTL" package produces errors but is fixable. To do this, simply do the post by "rw3iss" (https://github.com/mike-matera/ArduinoSTL/issues/84).
+
+If to use the `std::vector` directly, set the #define 'NO_ARDUINO_STL' to the build (-D NO_ARDUINO_STL).
+
 ## Contents
 
 ### Simplified Threading
