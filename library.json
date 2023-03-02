@@ -1,6 +1,6 @@
 {
     "name": "Jobber",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "simulated threading for Arduino & Co.",
     "authors": [
         {
